@@ -1,0 +1,6 @@
+обработка post-запросов по маршруту "localhost:3000/articles/add"
+
+curl -X POST -d request http://localhost:3000/articles
+в случае ошибки - 400 bad request
+
+вывод - request
