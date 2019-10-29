@@ -23,7 +23,7 @@ type Counter struct {
 }
 
 //POST
-func (ctr *Counter) newArticle(w http.ResponseWriter, r *http.Request) {
+func (ctr *Counter) NewArticle(w http.ResponseWriter, r *http.Request) {
 
 	body, err := ioutil.ReadAll(r.Body)
 
@@ -44,20 +44,15 @@ func (ctr *Counter) newArticle(w http.ResponseWriter, r *http.Request) {
 		if err != nil {
 			w.WriteHeader(http.StatusBadRequest)
 		} else {
-			w.Write(resp)
-			w.Write([]byte("\n\n"))
 
+			fmt.Println("x-req-id", r.Header.Get("x-req-id"))
+			w.Write(resp)
 		}
 
 	}
-	//defer r.Body.Close()
+	defer r.Body.Close()
 
 }
-
-//GET
-// func getArticle(w http.ResponseWriter, r *http.Request) {
-// 	w.Write([]byte("get"))
-// }
 
 func main() {
 
@@ -65,11 +60,10 @@ func main() {
 
 	r.Use(middleware.Logger)
 
-	ctr := new(Counter)
+	ctr := Counter{}
 
 	r.Route("/articles", func(r chi.Router) {
-		//r.Get("/", getArticle)
-		r.Post("/add", ctr.newArticle)
+		r.Post("/add", ctr.NewArticle)
 
 	})
 
